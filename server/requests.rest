@@ -1,0 +1,36 @@
+# POST http://localhost:3000/auth/signup
+# Content-Type: application/json
+
+# {
+#     "fullname":"iamThemike",
+#     "email": "1248884434@1234.com",
+#     "password": "Iamthemike1"
+# }
+
+# GET http://localhost:3000/auth/get-upload-url
+
+
+# POST http://localhost:3000/blog/create-blog
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODFmMDNhOGMxZDMwNzlkOGY0ZWVhOCIsImlhdCI6MTczNjc1NTY1Nn0.F0IkNPYLRcFEmab30mLEuRvWne-D2BHqywkGcTIsYgQ
+
+# {
+#     "title":"iamthemike",
+#     "banner": "https://example.com",
+#     "des": "Iamthemike2",
+#     "content":{
+#         "blocks":[1,2,3]
+#     },
+#     "tags":["tag1","tag2"]
+# }
+# GET http://localhost:3000/blog/latest-blogs
+
+# GET http://localhost:3000/blog/trending-blogs
+
+POST  http://localhost:3000/blog/search-blogs
+Content-Type: application/json
+
+{
+ 
+    "tag":"test"
+}
