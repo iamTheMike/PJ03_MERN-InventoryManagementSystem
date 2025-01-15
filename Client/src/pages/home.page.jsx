@@ -15,9 +15,10 @@ const HomePage = () => {
 
     let [blogs, setBlogs] = useState();
     let [trending, setTrending] = useState(null);
-    let [pageState, setPageState] = useState("home");
+    let [pageState, setPageState] = useState("Home");
 
-    let categories = ["test", "programming", "sport", "cooking", "tech", "finances"]
+
+    let categories = ["Test", "Programming", "Sport", "Cooking", "Tech", "Finances"]
 
     const fetchLatestBlogs = async ({ page }) => {
         await axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/latest-blogs", { page })
@@ -46,14 +47,15 @@ const HomePage = () => {
             })
     }
     const loadBlogByCategory = (e) => {
-        let category = e.target.innerText.toLowerCase();
+        let category = e.target.innerText;
         setBlogs(null);
         if (pageState === category) {
-            setPageState("home");
+            setPageState("Home");
             return;
         }
         setPageState(category)
     }
+
     const fetchBlogsByCategory = async ({ page }) => {
         await axios.post(import.meta.env.VITE_SERVER_DOMAIN + "/blog/search-blogs", { tag: pageState, page })
             .then(async ({ data }) => {
@@ -74,111 +76,109 @@ const HomePage = () => {
             })
     }
 
+    
 
     useEffect(() => {
-
         activeTabRef.current.click();
         if (!blogs) {
-            if (pageState === "home") {
+            if (pageState === "Home") {
                 fetchLatestBlogs({ page: 1 });
             } else {
                 fetchBlogsByCategory({ page: 1 });
             }
         }
-
         if (!trending) {
             fetchTrendingBlogs();
         }
-    
     }, [pageState])
 
-return (
-    <AnimationWrapper>
-        <section className='h-cover flex justify-center gap-10'>
+    return (
+        <AnimationWrapper>
+            <section className='h-cover flex justify-center gap-10'>
 
-            <div className='w-full'>
-                <InPageNavigation routes={[pageState, "trending blogs"]} defaultHidden={["trending blogs"]}
-                >
-                    <>
-                        {
-                            !blogs ? <Loader /> :
-                                blogs.results.length ? (
-                                    blogs.results.map((blog, i) => {
+                <div className='w-full'>
+                    <InPageNavigation routes={[pageState, "Trending Blogs"]} defaultHidden={["Trending Blogs"]}
+                    >
+                        <>
+                            {
+                                !blogs ? <Loader /> :
+                                    blogs.results.length ? (
+                                        blogs.results.map((blog, i) => {
 
-                                        return <AnimationWrapper key={i} transition={{ duration: 1, delay: i * .1 }}>
-                                            <BlogPostCard content={blog} author={blog.author.personal_info} />
-                                        </AnimationWrapper>
+                                            return <AnimationWrapper key={i} transition={{ duration: 1, delay: i * .1 }}>
+                                                <BlogPostCard content={blog} author={blog.author.personal_info} />
+                                            </AnimationWrapper>
+                                        })
+                                    )
+                                        :
+                                        <NoDataMessage message={`No ${pageState}'s Blogs published `} />
+                            }
+                            <LoadMoreDataBtn state={blogs} fetchDataFun={(pageState === "Home" ? fetchLatestBlogs : fetchBlogsByCategory)} />
+                        </>
+
+                        <>
+                            {
+                                !trending ? (<Loader />) :
+                                    (trending.length ?
+                                        trending.map((blog, i) => {
+
+                                            return <AnimationWrapper key={i} transition={{ duration: 1, delay: i * .1 }}>
+                                                <MinimalBlogPost blog={blog} index={i} />
+                                            </AnimationWrapper>
+                                        })
+                                        :
+                                        <NoDataMessage message={"No Trending blog"} />
+                                    )
+                            }
+
+                        </>
+
+                    </InPageNavigation>
+
+                </div>
+
+                <div className='min-w-[40%] lg:min-w-[400px] max-w-min border-l border-grey pl-8 pt-3 max-md:hidden '>
+                    <div className='flex flex-col gap-10'>
+
+                        <div>
+                            <h1 className='font-medium text-xl mb-8'>Stories form all interests</h1>
+                            <div className='flex gap-3 flex-wrap'>
+                                {
+                                    categories.map((category, i) => {
+                                        return (
+                                            <button key={i}
+                                                onClick={loadBlogByCategory}
+                                                className={"tag " + (pageState === category ? "bg-black text-white" : "")}
+                                            >
+                                                {category}
+                                            </button>)
+
                                     })
-                                )
-                                    :
-                                    <NoDataMessage message={`No ${pageState}'s Blogs published `} />
-                        }
-                        <LoadMoreDataBtn state={blogs} fetchDataFun={(pageState === "home" ? fetchLatestBlogs : fetchBlogsByCategory)} />
-                    </>
+                                }
+                            </div>
+                        </div>
 
-                    <>
-                        {
-                            !trending ? (<Loader />) :
-                                (trending.length ?
+                        <div>
+                            <h1 className='font-medium text-xl mb-8'>
+                                Trending
+                                <i className='fi fi-rr-arrow-trend-up'></i>
+                            </h1>
+                            {
+                                !trending ? <Loader /> :
                                     trending.map((blog, i) => {
 
                                         return <AnimationWrapper key={i} transition={{ duration: 1, delay: i * .1 }}>
                                             <MinimalBlogPost blog={blog} index={i} />
                                         </AnimationWrapper>
                                     })
-                                    :
-                                    <NoDataMessage message={"No Trending blog"} />
-                                )
-                        }
-
-                    </>
-
-                </InPageNavigation>
-
-            </div>
-
-            <div className='min-w-[40%] lg:min-w-[400px] max-w-min border-l border-grey pl-8 pt-3 max-md:hidden '>
-                <div className='flex flex-col gap-10'>
-
-                    <div>
-                        <h1 className='font-medium text-xl mb-8'>Stories form all interests</h1>
-                        <div className='flex gap-3 flex-wrap'>
-                            {
-                                categories.map((category, i) => {
-                                    return (
-                                        <button key={i}
-                                            onClick={loadBlogByCategory}
-                                            className={"tag " + (pageState === category ? "bg-black text-white" : "")}
-                                        >
-                                            {category}
-                                        </button>)
-
-                                })
                             }
                         </div>
+
                     </div>
-
-                    <div>
-                        <h1 className='font-medium text-xl mb-8'>
-                            Trending
-                            <i className='fi fi-rr-arrow-trend-up'></i>
-                        </h1>
-                        {
-                            !trending ? <Loader /> :
-                                trending.map((blog, i) => {
-
-                                    return <AnimationWrapper key={i} transition={{ duration: 1, delay: i * .1 }}>
-                                        <MinimalBlogPost blog={blog} index={i} />
-                                    </AnimationWrapper>
-                                })
-                        }
-                    </div>
-
                 </div>
-            </div>
-        </section>
-    </AnimationWrapper>
-)
+            </section>
+        </AnimationWrapper>
+    )
 }
 
 export default HomePage

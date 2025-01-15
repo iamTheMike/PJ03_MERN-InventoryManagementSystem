@@ -69,17 +69,19 @@ export const trendingBlogs = async (req, res) => {
 }
 
 export const searchBlogs = async (req, res) => {
-    let { tag,query,page } = req.body;
-
+    let { tag, query,author, page } = req.body;
+    
     let findQuery;
-    if(tag){
-         findQuery = { tags: tag, draft: false }
-    }else{
-        findQuery = {  draft: false, title:new RegExp(query,'i') }
+    if (tag) {
+        findQuery = { tags: tag, draft: false }
+    } else if(query) {
+        findQuery = { draft: false, title: new RegExp(query, 'i') }
+    } else if (author){
+        findQuery = { draft: false, author}
     }
     let maxLimit = 2;
     await Blog.find(findQuery)
-        .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id").sort({ "activity.total_read": -1, "activity.total_likes": -1, "publishedAt": -1 }).select("blog_id title des banner activity tags publishedAt -_id").skip((page-1)*maxLimit).limit(maxLimit)
+        .populate("author", "personal_info.profile_img personal_info.username personal_info.fullname -_id").sort({ "activity.total_read": -1, "activity.total_likes": -1, "publishedAt": -1 }).select("blog_id title des banner activity tags publishedAt -_id").skip((page - 1) * maxLimit).limit(maxLimit)
         .then(blogs => {
             return res.status(200).json({ blogs: blogs })
         })
@@ -100,13 +102,15 @@ export const latestBlogsCount = async (req, res) => {
 }
 
 export const searchBlogsCount = async (req, res) => {
-    let { tag,query } = req.body;
+    let { tag, query,author } = req.body;
 
     let findQuery;
-    if(tag){
-         findQuery = { tags: tag, draft: false }
-    }else{
-        findQuery = {  draft: false, title:new RegExp(query,'i') }
+    if (tag) {
+        findQuery = { tags: tag, draft: false }
+    } else if(query) {
+        findQuery = { draft: false, title: new RegExp(query, 'i') }
+    } else if (author){
+        findQuery = { draft: false, author}
     }
     Blog.countDocuments(findQuery)
         .then(count => {
@@ -115,4 +119,29 @@ export const searchBlogsCount = async (req, res) => {
         .catch(err => {
             return res.status(500).json({ error: err.message })
         })
+}
+
+export const searchUsers = async(req, res) => {
+    let {query} = req.body
+
+    await User.find({"personal_info.username":new RegExp(query,'i')})
+    .limit(50)
+    .select("personal_info.fullname personal_info.username personal_info.profile_img -_id")
+    .then((users)=>{
+        return res.status(200).json({users})
+    })
+    .catch(err=>{
+        return res.status(500).json({error:err.message})
+    })
+}
+
+export const getProfile =async(req,res)=>{
+    let {username} = req.body;
+    User.findOne({"personal_info.username": username}).select("-personal_info.password -google_auth -updateAt -blogs").then(user=>{
+        return res.status(200).json({user:user})
+    })
+    .catch(err=>{
+        return res.status(500).json({error:err.message})
+    })
+
 }

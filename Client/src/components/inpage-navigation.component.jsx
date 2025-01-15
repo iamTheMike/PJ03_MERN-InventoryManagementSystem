@@ -17,7 +17,7 @@ const InPageNavigation = ({ routes, defaultHidden = [], defaultActiveIndex = 0,c
     }
     useEffect(() => {
         changePageState(activeTabRef.current, defaultActiveIndex)
-    }, [])
+    }, [routes])
     return (
         <>
             <div className='relative mb-8 bg-white border-b border-grey flex flex-nowrap overflow-x-auto'>
@@ -28,7 +28,7 @@ const InPageNavigation = ({ routes, defaultHidden = [], defaultActiveIndex = 0,c
                             <button
                                 ref={i === defaultActiveIndex ? activeTabRef : null}
                                 key={i}
-                                className={'p-4 px-5 capitalize ' + (inPageNavIndex === i ? "text-black" : "text-dark-grey") + (defaultHidden.includes(route) ? " md:hidden " : " ")}
+                                className={'p-4 px-5 ' + (inPageNavIndex === i ? "text-black" : "text-dark-grey") + (defaultHidden.includes(route) ? " md:hidden " : " ")}
                                 onClick={(e) => { changePageState(e.target, i) }}
                             >
                                 {route}

@@ -19,9 +19,10 @@ const BlogEditor = () => {
     let content = blog?.content
     let tags = blog?.tags
     let des = blog?.des
-      let { userAuth } = useContext(UserContext);
-      let access_token = userAuth?.access_token;
-      let navigate = useNavigate();
+    let { userAuth } = useContext(UserContext);
+    let access_token = userAuth?.access_token;
+    let navigate = useNavigate();
+  
     useEffect(() => {
         if (!textEditor.isReady) {
             setTextEditor(new EditorJS({
@@ -102,11 +103,11 @@ const BlogEditor = () => {
         if (!title.length) {
             return toast.error("Write blog title  before saving  draft")
         }
-        
+
         let loadingToast = toast.loading("Saving Draft....")
-        
+
         e.target.classList.add('disable'); //rotect the blog before publishing it twice
-        if(textEditor.isReady){
+        if (textEditor.isReady) {
             textEditor.save().then(content => {
                 let blogObj = {
                     title, banner, des, content, tags, draft: true
@@ -120,7 +121,7 @@ const BlogEditor = () => {
                         e.target.classList.remove('disable');
                         toast.dismiss(loadingToast);
                         toast.success("Save the blog completely")
-        
+
                         setTimeout(() => {
                             navigate("/")
                         }, 500)
@@ -133,7 +134,7 @@ const BlogEditor = () => {
 
             })
         }
-       
+
 
 
     }

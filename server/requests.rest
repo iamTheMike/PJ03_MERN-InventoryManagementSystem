@@ -27,10 +27,27 @@
 
 # GET http://localhost:3000/blog/trending-blogs
 
-POST  http://localhost:3000/blog/search-blogs
+# POST  http://localhost:3000/blog/search-blogs
+# Content-Type: application/json
+
+# {
+ 
+#     "tag":"test"
+# }
+
+
+# POST  http://localhost:3000/blog/search-users
+# Content-Type: application/json
+
+# {
+ 
+#     "query":"m"
+# }
+
+POST  http://localhost:3000/blog/get-profile
 Content-Type: application/json
 
 {
  
-    "tag":"test"
+    "username":"1234"
 }
