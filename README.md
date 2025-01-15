@@ -19,6 +19,8 @@ The Application provides a blogging platform with user authentication features .
 ### Technologies Used
  * Node.js : Provider the backend environment for this API
  * Express Framework : is used to handle requests, routing.
+ * Vite@React Framework is used to hanndle user Interface.
+ * TailwindCSS is used to handle CSS style. 
  * MongoDB  : Mongoose schemas is used for modeling  Blog data
  * AWS : S3 Service is used for store the image 
  * Firebase : Authentication service is used for Google Oauth2
