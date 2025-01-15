@@ -6,16 +6,15 @@
 # API - Blog Platform
 
 ## Description
-This API is an edited version of PJ01-MERN-Server, 
-modified to use local databases such as MySQL, MongoDB,  and  Docker support. 
-It is a RESTful API built with Node.js, Express, and other essential libraries. The API provides a blogging platform with user authentication features and integrates Swagger for auto-generated documentation.
+This Application is created by MERN Stack.
+The Application provides a blogging platform with user authentication features .
 
 
 ### Feature
-  * Blog Routes:  Endpoints for creating, updating, and deleting blog posts.
+  <!-- * Blog Routes:  Endpoints for creating, updating, and deleting blog posts.
   * Authenitcation Routes: Handles user authentication, including Login and registration, 2FA via OTP sent to email, Google OAuth2 integration.
   * Swagger Documentation: Automatically generated API documentation for easy reference.
-  * Docker: Provides containerized environments for efficient development and deployment
+  * Docker: Provides containerized environments for efficient development and deployment -->
 
 ### Technologies Used
  * Node.js : Provider the backend environment for this API
