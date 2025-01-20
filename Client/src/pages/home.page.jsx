@@ -67,8 +67,6 @@ const HomePage = () => {
                     countRoute: "/blog/search-blogs-count",
                     data_to_send: { tag: pageState }
                 })
-
-
                 setBlogs(formatedData);
             })
             .catch(err => {

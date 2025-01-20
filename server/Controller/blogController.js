@@ -70,10 +70,9 @@ export const trendingBlogs = async (req, res) => {
 
 export const searchBlogs = async (req, res) => {
     let { tag, query,author, page } = req.body;
-    
     let findQuery;
     if (tag) {
-        findQuery = { tags: tag, draft: false }
+        findQuery = { tags: tag.toLowerCase(), draft: false }
     } else if(query) {
         findQuery = { draft: false, title: new RegExp(query, 'i') }
     } else if (author){
