@@ -4,7 +4,6 @@ import { nanoid } from 'nanoid';
 
 const s3 = new S3({
     region: 'ap-southeast-2',
-
     credentials: {
         accessKeyId:process.env.AWS_ACCESS_KEY,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -14,11 +13,13 @@ const s3 = new S3({
 export const generateUploadURL = async() =>{
     const date = new Date();
     const imageName = `${nanoid()}-${date.getTime()}.jpeg`
-    return await getSignedUrl(s3, new PutObjectCommand({
+    const url =  await getSignedUrl(s3, new PutObjectCommand({
         Bucket: 'pj03',
         Key: imageName,
         ContentType: "image/jpeg",
     }), {
         expiresIn: 1000,
     });
+    console.log(url)
+    return url;
 }

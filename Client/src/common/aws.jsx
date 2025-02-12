@@ -4,6 +4,7 @@ const UploadImage = async(img) => {
  let imgUrl = null;
  await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/auth/get-upload-url")
  .then(async({data:{uploadURL}})=>{
+    console.log(uploadURL)
     await axios({
         method: 'PUT',
         url:uploadURL,
@@ -11,7 +12,9 @@ const UploadImage = async(img) => {
         data: img
     })
     .then(()=>{
+        console.log(uploadURL);
          imgUrl = uploadURL.split("?")[0]
+         console.log(imgUrl);
 
     })
  })
@@ -19,3 +22,4 @@ const UploadImage = async(img) => {
 }
 
 export default UploadImage
+
